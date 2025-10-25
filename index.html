@@ -63,8 +63,7 @@
   <div class="footer">Actualizado en tiempo real</div>
 
   <script>
-    // 🔑 Reemplaza esta URL con la de tu hoja PANEL publicada como CSV
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/2PACX-1vQTJ6Vys8dAgzbmIPtbu8ytI9C25cvKobWTG7rBPYB-pjJ9mIXd_GsVIsf7tmne0FBrq0TCybEVvIUM/export?format=csv&gid=757563170";
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQTJ6Vys8dAgzbmIPtbu8ytI9C25cvKobWTG7rBPYB-pjJ9mIXd_GsVIsf7tmne0FBrq0TCybEVvIUM/pub?gid=757563170&single=true&output=csv";
 
     async function cargarDatos() {
       try {
@@ -74,11 +73,25 @@
         
         let html = '';
         lineas.forEach(linea => {
-          // Soporta comillas en CSV (estándar RFC 4180)
-          const match = linea.match(/("(?:[^"]|"")*"|[^,]*),("(?:[^"]|"")*"|[^,]*)/);
-          if (match) {
-            let etiqueta = match[1].replace(/^"(.*)"$/, '$1').replace(/""/g, '"');
-            let valor = match[2].replace(/^"(.*)"$/, '$1').replace(/""/g, '"');
+          // Dividir respetando comillas (estándar CSV)
+          const valores = [];
+          let current = '';
+          let inQuotes = false;
+          for (let char of linea) {
+            if (char === '"') {
+              inQuotes = !inQuotes;
+            } else if (char === ',' && !inQuotes) {
+              valores.push(current.trim());
+              current = '';
+            } else {
+              current += char;
+            }
+          }
+          valores.push(current.trim());
+
+          if (valores.length >= 2) {
+            const etiqueta = valores[0].replace(/"/g, '');
+            const valor = valores[1].replace(/"/g, '');
             if (etiqueta || valor) {
               html += `<div class="row"><div class="label">${etiqueta}</div><div class="value">${valor}</div></div>`;
             }
@@ -92,9 +105,8 @@
       }
     }
 
-    // Cargar al inicio y cada 5 minutos
     cargarDatos();
-    setInterval(cargarDatos, 300000);
+    setInterval(cargarDatos, 300000); // Cada 5 minutos
   </script>
 </body>
 </html>
