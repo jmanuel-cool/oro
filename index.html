@@ -1,60 +1,4 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ahorro en Oro - Patria</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      padding: 20px;
-      background: #fffaf0;
-      color: #333;
-      margin: 0;
-    }
-    h1 {
-      color: #d4af37;
-      text-align: center;
-      margin: 0 0 20px;
-      font-size: 1.6em;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    }
-    .container {
-      max-width: 420px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-    .row {
-      display: flex;
-      padding: 14px 20px;
-      border-bottom: 1px solid #f0f0f0;
-    }
-    .row:last-child {
-      border: none;
-    }
-    .label {
-      font-weight: 600;
-      color: #8B6B00;
-      flex: 1;
-      font-size: 15px;
-    }
-    .value {
-      flex: 1;
-      text-align: right;
-      font-size: 15px;
-      color: #222;
-    }
-    .footer {
-      text-align: center;
-      margin-top: 20px;
-      color: #888;
-      font-size: 13px;
-    }
-  </style>
-</head>
 <body>
   <h1>📊 Ahorro en Oro – Patria</h1>
   <div class="container" id="datos">
@@ -73,7 +17,6 @@
         
         let html = '';
         lineas.forEach(linea => {
-          // Dividir respetando comillas (estándar CSV)
           const valores = [];
           let current = '';
           let inQuotes = false;
@@ -106,7 +49,7 @@
     }
 
     cargarDatos();
-    setInterval(cargarDatos, 300000); // Cada 5 minutos
+    setInterval(cargarDatos, 300000);
   </script>
 </body>
 </html>
