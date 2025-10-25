@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ahorro en Oro - Patria</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #fff9e6;
+      color: #333;
+    }
+    h1 {
+      color: #d4af37;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .data-table {
+      max-width: 400px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .row {
+      display: flex;
+      padding: 12px 15px;
+      border-bottom: 1px solid #eee;
+    }
+    .row:last-child { border: none; }
+    .label { font-weight: bold; color: #8B6B00; flex: 1; }
+    .value { flex: 1; text-align: right; }
+  </style>
+</head>
+<body>
+  <h1>📊 Ahorro en Oro</h1>
+  <div class="data-table" id="container">
+    <div class="row"><div class="label">Cargando...</div></div>
+  </div>
+
+  <script>
+    // 🔑 Reemplaza esta URL con la de tu hoja publicada como CSV
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQTJ6Vys8dAgzbmIPtbu8ytI9C25cvKobWTG7rBPYB-pjJ9mIXd_GsVIsf7tmne0FBrq0TCybEVvIUM/pub?gid=0&single=true&output=csv";
+
+    async function cargarYMostrar() {
+      try {
+        const response = await fetch(csvUrl);
+        const text = await response.text();
+        const lineas = text.split('\n').filter(l => l.trim() !== '');
+        
+        const datos = [];
+        // Extraer filas 2 a 10 (índices 1 a 9 en array)
+        for (let i = 1; i <= 9 && i < lineas.length; i++) {
+          const celdas = lineas[i].split(',').map(c => c.replace(/^"(.*)"$/, '$1'));
+          if (celdas.length > 10) {
+            const etiqueta = celdas[9]?.trim() || '';
+            const valor = celdas[10]?.trim() || '';
+            if (etiqueta || valor) {
+              datos.push({ etiqueta, valor });
+            }
+          }
+        }
+
+        let html = '';
+        datos.forEach(d => {
+          if (d.etiqueta || d.valor) {
+            html += `<div class="row"><div class="label">${d.etiqueta}</div><div class="value">${d.valor}</div></div>`;
+          }
+        });
+
+        document.getElementById('container').innerHTML = html || '<div class="row"><div class="label">Sin datos</div></div>';
+      } catch (e) {
+        document.getElementById('container').innerHTML = '<div class="row"><div class="label">❌ Error al cargar</div></div>';
+      }
+    }
+
+    cargarYMostrar();
+    // Actualizar cada 5 minutos
+    setInterval(cargarYMostrar, 300000);
+  </script>
+</body>
+</html>
