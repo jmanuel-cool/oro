@@ -1,8 +1,61 @@
 <!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ahorro en Oro</title>
+  <style>
+    body {
+      background: #0f0f0f;
+      color: #e0e0e0;
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 13px; /* ≈ 0.5pt más pequeña que el estándar */
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #ffd700;
+      text-align: center;
+      font-size: 1.3em; /* Título más pequeño */
+      margin: 0 0 18px;
+    }
+    .card {
+      background: #1a1a1a;
+      border-radius: 10px;
+      padding: 16px;
+      max-width: 400px;
+      margin: 0 auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .row {
+      display: flex;
+      padding: 10px 0;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .row:last-child {
+      border: none;
+    }
+    .label {
+      color: #ffb74d;
+      flex: 1;
+    }
+    .value {
+      color: white;
+      text-align: right;
+      flex: 1;
+    }
+    .footer {
+      text-align: center;
+      color: #777;
+      font-size: 12px;
+      margin-top: 16px;
+    }
+  </style>
+</head>
 <body>
-  <h1><marquee>📊 Ahorro en Oro – Patria</marquee></h1>
-  <div class="container" id="datos">
-    <div class="row"><div class="label">Cargando datos...</div></div>
+  <h1>📊 Ahorro en Oro – Patria</h1>
+  <div class="card" id="datos">
+    <div class="row"><div class="label">Cargando...</div></div>
   </div>
   <div class="footer">Actualizado en tiempo real</div>
 
@@ -11,40 +64,21 @@
 
     async function cargarDatos() {
       try {
-        const response = await fetch(CSV_URL);
-        const text = await response.text();
-        const lineas = text.trim().split('\n').filter(l => l.trim() !== '');
-        
+        const res = await fetch(CSV_URL);
+        const txt = await res.text();
+        const lines = txt.trim().split('\n').filter(l => l.trim());
         let html = '';
-        lineas.forEach(linea => {
-          const valores = [];
-          let current = '';
-          let inQuotes = false;
-          for (let char of linea) {
-            if (char === '"') {
-              inQuotes = !inQuotes;
-            } else if (char === ',' && !inQuotes) {
-              valores.push(current.trim());
-              current = '';
-            } else {
-              current += char;
-            }
-          }
-          valores.push(current.trim());
-
-          if (valores.length >= 2) {
-            const etiqueta = valores[0].replace(/"/g, '');
-            const valor = valores[1].replace(/"/g, '');
-            if (etiqueta || valor) {
-              html += `<div class="row"><div class="label">${etiqueta}</div><div class="value">${valor}</div></div>`;
-            }
+        lines.forEach(line => {
+          const parts = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+          if (parts.length >= 2) {
+            const label = parts[0].replace(/^"(.*)"$/, '$1');
+            const value = parts[1].replace(/^"(.*)"$/, '$1');
+            html += `<div class="row"><div class="label">${label}</div><div class="value">${value}</div></div>`;
           }
         });
-
         document.getElementById('datos').innerHTML = html || '<div class="row"><div class="label">Sin datos</div></div>';
       } catch (e) {
-        document.getElementById('datos').innerHTML = `<div class="row"><div class="label">❌ Error al cargar</div></div>`;
-        console.error("Error:", e);
+        document.getElementById('datos').innerHTML = '<div class="row"><div class="label">❌ Error</div></div>';
       }
     }
 
