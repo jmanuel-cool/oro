@@ -1115,8 +1115,7 @@ setInterval(cargarDatos, 300000);
 | ****GoldAPI****          | <a href="https://www.goldapi.io/" dir="ltr">https://www.goldapi.io</a> | Precio del oro (LBMA)    |
 | ****BCV API****          | <a href="https://bcvapi.tech/" dir="ltr">https://bcvapi.tech</a>       | Tasa oficial del BCV     |
 | ****Google Sheets****    | \-                                                                     | Almacenamiento y cálculo |
-| ****Telegram Bot API**** | <a href="https://core.telegram.org/bots/api"                           
-                            dir="ltr">https://core.telegram.org/bots/api</a>                        | Notificaciones           |
+| ****Telegram Bot API**** | <a href="https://core.telegram.org/bots/api" dir="ltr">https://core.telegram.org/bots/api</a> | Notificaciones           |
 
 </div>
 
