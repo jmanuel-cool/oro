@@ -1138,6 +1138,26 @@ setInterval(cargarDatos, 300000);
 
 ------------------------------------------------------------------------
 
+## 💡 Inversiones en fecha de amortización
+
+Si realizas una nueva inversión el mismo día que recibes una amortización, **regístrala como una nueva fila** en la hoja `Inversiones`. El sistema automáticamente:
+
+- Calculará su fecha de amortización (`fecha + 90 días`).
+- Incluirá su valor en el total consolidado si coincide con otras amortizaciones futuras.
+
+> **No se suman amortizaciones pasadas**: cada inversión genera su propia amortización independiente.
+
+#### Ejemplo:
+- **16/09/2025**: Inviertes 1,200 VES en 0.15g → se amortiza el **16/12/2025**.
+- **16/12/2025**: Recibes 1,500 VES (amortización) y ese mismo día inviertes 1,500 VES en 0.25g.
+  - Esta **nueva inversión** se registra en una **nueva fila**.
+  - Su fecha de amortización será: **16/03/2026**.
+- **16/03/2026**: Recibirás la amortización correspondiente a la inversión del 16/12/2025 (calculada con el precio del oro de ese día).
+
+La amortización del 16/12/2025 **no se suma** a la del 16/03/2026; son eventos independientes.
+
+------------------------------------------------------------------------
+
 ## 🙏 Agradecimientos
 
 - A las APIs públicas que hacen posible este proyecto.
