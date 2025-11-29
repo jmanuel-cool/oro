@@ -67,7 +67,7 @@
   <div class="card" id="datos">
     <div class="row"><div class="label">Cargando...</div></div>
   </div>
-  <div class="footer">Se Actualiza cada hora</div>
+  <div class="footer">Se Actualiza cada 12 horas</div>
 
   <script>
     // 🔗 Reemplaza con tu URL de CSV pública de la hoja PANEL
@@ -105,9 +105,9 @@
       }
     }
 
-    // Cargar al inicio y cada 60 minutos
+    // Cargar al inicio y cada 12 horas
     cargarDatos();
-    setInterval(cargarDatos, 300000);
+    setInterval(cargarDatos, 216000000);
   </script>
 <div style="text-align:center; margin-top:24px; padding:14px; background:#222; border-radius:10px; border:1px solid #333;">
   <a href="https://www.bestchange.com/?p=1336986"
